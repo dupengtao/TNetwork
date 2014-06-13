@@ -1,0 +1,13 @@
+/gen
+/assets
+/bin
+/gradle
+/libs
+/out
+/build.gradle
+/gradlew
+/gradlew.bat
+/proguard-project.txt
+/TNetwork.iml
+/ant.properties
+/.idea

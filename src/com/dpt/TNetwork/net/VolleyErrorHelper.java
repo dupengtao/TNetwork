@@ -21,14 +21,13 @@ public class VolleyErrorHelper {
      * against the specified error object.
      *
      * @param error
-     * @param context
      * @return
      */
-    public static String getMessage(Object error, Context context) {
+    public static String getMessage(Object error) {
         if (error instanceof TimeoutError) {
             return ERROR_SERVER_DOWN;
         } else if (isServerProblem(error)) {
-            return handleServerError(error, context);
+            return handleServerError(error);
         } else if (isNetworkProblem(error)) {
             return ERROR_NO_INTERNET;
         }
@@ -60,10 +59,9 @@ public class VolleyErrorHelper {
      * show a message retrieved from the server.
      *
      * @param err
-     * @param context
      * @return
      */
-    private static String handleServerError(Object err, Context context) {
+    private static String handleServerError(Object err) {
         VolleyError error = (VolleyError) err;
 
         NetworkResponse response = error.networkResponse;

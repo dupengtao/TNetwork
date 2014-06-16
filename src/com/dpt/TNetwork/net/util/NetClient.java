@@ -106,11 +106,12 @@ public class NetClient {
         String message = "";
         try {
             message = VolleyErrorHelper.getMessage(error);
-            message += "statusCode" + error.networkResponse.statusCode;
+
             if (VolleyErrorHelper.ERROR_NO_INTERNET == message) {
                 //没有网络的回调
                 listener.onNotNetwork();
             } else {
+                message += "statusCode" + error.networkResponse.statusCode;
                 //请求失败的回调
                 listener.onFailure(error, message);
             }

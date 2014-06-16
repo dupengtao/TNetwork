@@ -6,6 +6,8 @@ import android.widget.TextView;
 import com.dpt.TNetwork.engine.WalletEngine;
 import com.dpt.TNetwork.engine.domain.WalletAccountQuery;
 import com.dpt.TNetwork.net.listener.DefaultTOListener;
+import com.dpt.TNetwork.net.listener.INetClientJsonListener;
+import org.json.JSONObject;
 
 public class NetworkActivity extends Activity {
     private static final String TAG = NetworkActivity.class.getSimpleName();
@@ -31,6 +33,41 @@ public class NetworkActivity extends Activity {
 
     private void loadDate() {
 
+        // loadTOType();
+
+        loadJsonType();
+    }
+
+    private void loadJsonType() {
+        engine.loadWalletHome(new INetClientJsonListener() {
+            @Override
+            public void onSuccess(JSONObject jsonObject, String[] otherMsg) {
+                mTv.setText(jsonObject.toString());
+            }
+
+            @Override
+            public void onFailure(Throwable e, String content) {
+
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onNotNetwork() {
+
+            }
+        });
+    }
+
+    private void loadTOType() {
         engine.loadWalletHome(new DefaultTOListener<WalletAccountQuery>(WalletAccountQuery.class) {
             @Override
             public void onSuccess(WalletAccountQuery walletAccountQuery, String[] otherMsg) {

@@ -8,7 +8,6 @@ import com.dpt.TNetwork.net.VolleyController;
  */
 public class TNetworkApp extends Application {
 
-  
 
     /**
      * A singleton instance of the application class for easy access in other places

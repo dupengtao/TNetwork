@@ -7,8 +7,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.dpt.TNetwork.application.TNetworkApp;
 import com.dpt.TNetwork.net.DefaultRequestFactory;
 import com.dpt.TNetwork.net.VolleyErrorHelper;
-import com.dpt.TNetwork.net.interfaces.INetClientBaseListener;
-import com.dpt.TNetwork.net.interfaces.INetClientStrListener;
+import com.dpt.TNetwork.net.listener.INetClientBaseListener;
+import com.dpt.TNetwork.net.listener.INetClientStrListener;
 import com.dpt.TNetwork.util.LogHelper;
 
 import java.util.Map;
@@ -16,27 +16,30 @@ import java.util.Map;
 /**
  * Created by dupengtao on 2014/6/13.
  */
-public class NetClent {
+public class NetClient {
 
-    private static final String TAG = NetClent.class.getSimpleName();
-    private static NetClent mNetClent;
+    private static final String TAG = NetClient.class.getSimpleName();
+    private static NetClient mNetClient;
     private final DefaultRequestFactory mRequestFactory;
 
-    private NetClent() {
+    private NetClient() {
         mRequestFactory = new DefaultRequestFactory();
     }
 
-    public static synchronized NetClent init() {
-        if (mNetClent == null) {
-            mNetClent = new NetClent();
+    public static synchronized NetClient init() {
+        if (mNetClient == null) {
+            mNetClient = new NetClient();
         }
-        return mNetClent;
+        return mNetClient;
     }
 
     public void excuteRequest(Request request, String tag) {
         TNetworkApp.getInstance().getVolleyController().addToRequestQueue(request, tag);
     }
 
+    /**
+     * @param request
+     */
     public void excuteRequest(Request request) {
         TNetworkApp.getInstance().getVolleyController().addToRequestQueue(request);
     }

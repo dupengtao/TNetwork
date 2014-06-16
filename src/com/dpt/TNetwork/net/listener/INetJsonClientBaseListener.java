@@ -1,4 +1,4 @@
-package com.dpt.TNetwork.net.interfaces;
+package com.dpt.TNetwork.net.listener;
 
 import org.json.JSONObject;
 

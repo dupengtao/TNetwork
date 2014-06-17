@@ -187,7 +187,7 @@ public class NetClient {
      * if do not use xml anim , you should use{@link com.android.volley.toolbox.ImageLoader#get(String, com.android.volley.toolbox.ImageLoader.ImageListener)}
      * eg.
      * @see {@link com.dpt.TNetwork.net.AbAnimImageListener}
-     * @param loadingResId if loadingResId is 0 ,imageview will not loading image
+     * @param loadingResId if loadingResId is 0 ,ImageView will not loading image
      * @param animResId anim in xml
      */
     public static void loadImageWithAnim(Context context,String url, ImageView imageView, int loadingResId, int errorResId, final int animResId){

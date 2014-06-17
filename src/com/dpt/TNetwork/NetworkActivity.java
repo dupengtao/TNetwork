@@ -1,7 +1,9 @@
 package com.dpt.TNetwork;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import com.dpt.TNetwork.engine.WalletEngine;
 import com.dpt.TNetwork.engine.domain.WalletAccountQuery;
@@ -22,6 +24,11 @@ public class NetworkActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         mTv = (TextView) findViewById(R.id.tv);
+    }
+
+    public void openImageActivity(View view){
+        Intent intent = new Intent(this,NetImageActivity.class);
+        startActivity(intent);
     }
 
     @Override

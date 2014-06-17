@@ -1,11 +1,18 @@
 package com.dpt.TNetwork.net.util;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.widget.ImageView;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.dpt.TNetwork.application.TNetworkApp;
+import com.dpt.TNetwork.net.AbAnimImageListener;
 import com.dpt.TNetwork.net.DefaultRequestFactory;
 import com.dpt.TNetwork.net.VolleyErrorHelper;
 import com.dpt.TNetwork.net.listener.INetClientBaseListener;
@@ -14,6 +21,7 @@ import com.dpt.TNetwork.net.listener.INetClientStrListener;
 import com.dpt.TNetwork.util.LogHelper;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -40,9 +48,6 @@ public class NetClient {
         TNetworkApp.getInstance().getVolleyController().addToRequestQueue(request, tag);
     }
 
-    /**
-     * @param request
-     */
     public void excuteRequest(Request request) {
         TNetworkApp.getInstance().getVolleyController().addToRequestQueue(request);
     }
@@ -109,7 +114,7 @@ public class NetClient {
     }
 
 
-    private Request setNoCache(Request request) {
+    private static Request setNoCache(Request request) {
         request.setShouldCache(false);
         return request;
     }
@@ -167,6 +172,94 @@ public class NetClient {
             //请求完成的回调
             listener.onFinish();
         }
+    }
+
+    //image
+    public static void loadImage(String url, ImageView imageView, int loadingResId, int errorResId) {
+        loadImage(url,imageView,loadingResId,errorResId,0,0);
+    }
+
+    public static void loadImage(String url, ImageView imageView, int loadingResId, int errorResId,int maxWidth, int maxHeight) {
+        TNetworkApp.getInstance().getVolleyController().getImageLoader().get(url, ImageLoader.getImageListener(imageView, loadingResId, errorResId),maxWidth,maxHeight);
+    }
+
+    /**
+     * if do not use xml anim , you should use{@link com.android.volley.toolbox.ImageLoader#get(String, com.android.volley.toolbox.ImageLoader.ImageListener)}
+     * eg.
+     * @see {@link com.dpt.TNetwork.net.AbAnimImageListener}
+     * @param loadingResId if loadingResId is 0 ,imageview will not loading image
+     * @param animResId anim in xml
+     */
+    public static void loadImageWithAnim(Context context,String url, ImageView imageView, int loadingResId, int errorResId, final int animResId){
+        TNetworkApp.getInstance().getVolleyController().getImageLoader().get(url,new AbAnimImageListener(context,imageView,errorResId,loadingResId) {
+            @Override
+            public int getAnimResId() {
+                if(animResId<1){
+                    return 0;
+                }
+                return animResId;
+            }
+        });
+    }
+
+    /**
+     *
+     * @param isShouldCache if false will not in cache
+     */
+    public static void loadImage(String url, final ImageView imageView, int loadingResId, final int errorResId,int maxWidth, int maxHeight,boolean isShouldCache,Bitmap.Config decodeConfig,String tag){
+        if(loadingResId>0){
+            imageView.setImageResource(loadingResId);
+        }
+        if(maxWidth<1){
+            maxWidth=0;
+        }
+        if (maxHeight<1){
+            maxHeight=0;
+        }
+        ImageRequest imgRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+                imageView.setImageBitmap(response);
+            }
+        }, maxWidth, maxHeight, decodeConfig, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                imageView.setImageResource(errorResId);
+            }
+        });
+        if(!isShouldCache){
+            setNoCache(imgRequest);
+        }
+        TNetworkApp.getInstance().getVolleyController().addToRequestQueue(imgRequest, tag);
+    }
+
+    public static void cacheRemove(String url) {
+        TNetworkApp.getInstance().getVolleyController().getRequestQueue().getCache().remove(url);
+    }
+
+    public static void cacheClear() {
+        TNetworkApp.getInstance().getVolleyController().getRequestQueue().getCache().clear();
+    }
+
+    public static void cancelSingleRequest(String reqTag) {
+        TNetworkApp.getInstance().getVolleyController().getRequestQueue().cancelAll(reqTag);
+    }
+
+    public static void cancelAllRequests() {
+        TNetworkApp.getInstance().getVolleyController().getRequestQueue().cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+    }
+
+    /**
+     * count cache size
+     */
+    public static long getCacheSize(Context context) {
+        File cacheDir = new File(context.getCacheDir(), "volley");
+        return cacheDir.length();
     }
 
 }

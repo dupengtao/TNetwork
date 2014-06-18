@@ -52,64 +52,68 @@ public class NetClient {
         TNetworkApp.getInstance().getVolleyController().addToRequestQueue(request);
     }
 
-    public void excuteRequest(int method, String url, Map<String, String> headParams, Map<String, String> postParams, boolean isShouldCache,String tag,INetClientStrListener listener) {
+    public void excuteRequest(int method, String url, Map<String, String> headParams, Map<String, String> postParams, boolean isShouldCache, String tag, INetClientStrListener listener) {
         StringRequest strRequest = mRequestFactory.produceStrRequest(method, url, headParams, postParams, makeStrListener(listener), makeErrorListener(listener));
-        if (isShouldCache){
+        if (isShouldCache) {
             setNoCache(strRequest);
         }
-        excuteRequest(strRequest,tag);
+        excuteRequest(strRequest, tag);
     }
 
     /**
      * a simple get string request
      */
-    public void excuteRequest(String url,INetClientStrListener listener) {
-        StringRequest strRequest = mRequestFactory.produceStrRequest(url,makeStrListener(listener), makeErrorListener(listener));
+    public void excuteRequest(String url, INetClientStrListener listener) {
+        StringRequest strRequest = mRequestFactory.produceStrRequest(url, makeStrListener(listener), makeErrorListener(listener));
         excuteRequest(strRequest);
     }
+
     /**
      * a simple get string request with headParams
      */
-    public void excuteRequest(String url,Map<String,String> headParams,INetClientStrListener listener) {
-        StringRequest strRequest = mRequestFactory.produceStrRequest(url,headParams,makeStrListener(listener), makeErrorListener(listener));
+    public void excuteRequest(String url, Map<String, String> headParams, INetClientStrListener listener) {
+        StringRequest strRequest = mRequestFactory.produceStrRequest(url, headParams, makeStrListener(listener), makeErrorListener(listener));
         excuteRequest(strRequest);
     }
+
     /**
      * a simple post string request
      */
-    public void excutePostStrRequset(String url,Map<String,String> headParams,Map<String, String> postParams,INetClientStrListener listener){
-        StringRequest strRequest = mRequestFactory.producePostStrRequest(url,headParams,postParams,makeStrListener(listener),makeErrorListener(listener));
+    public void excutePostStrRequset(String url, Map<String, String> headParams, Map<String, String> postParams, INetClientStrListener listener) {
+        StringRequest strRequest = mRequestFactory.producePostStrRequest(url, headParams, postParams, makeStrListener(listener), makeErrorListener(listener));
         excuteRequest(strRequest);
     }
 
     // json
-    public void excuteJsonRequest(int method, String url, Map<String, String> headParams, Map<String, String> postParams, boolean isShouldCache,String tag,INetClientJsonListener listener) {
+    public void excuteJsonRequest(int method, String url, Map<String, String> headParams, Map<String, String> postParams, boolean isShouldCache, String tag, INetClientJsonListener listener) {
         JsonObjectRequest jsonObjectRequest = mRequestFactory.produceJsonRequest(method, url, headParams, postParams, makeJsonListener(listener), makeErrorListener(listener));
-        if (isShouldCache){
+        if (isShouldCache) {
             setNoCache(jsonObjectRequest);
         }
-        excuteRequest(jsonObjectRequest,tag);
+        excuteRequest(jsonObjectRequest, tag);
     }
 
     /**
      * a simple get json request
      */
-    public void excuteJsonRequest(String url,INetClientJsonListener listener) {
-        JsonObjectRequest jsonObjectRequest = mRequestFactory.produceJsonRequest(url,makeJsonListener(listener), makeErrorListener(listener));
+    public void excuteJsonRequest(String url, INetClientJsonListener listener) {
+        JsonObjectRequest jsonObjectRequest = mRequestFactory.produceJsonRequest(url, makeJsonListener(listener), makeErrorListener(listener));
         excuteRequest(jsonObjectRequest);
     }
+
     /**
      * a simple get json request with headParams
      */
-    public void excuteJsonRequest(String url,Map<String,String> headParams,INetClientJsonListener listener) {
-        JsonObjectRequest jsonObjectRequest = mRequestFactory.produceJsonRequest(url,headParams,makeJsonListener(listener), makeErrorListener(listener));
+    public void excuteJsonRequest(String url, Map<String, String> headParams, INetClientJsonListener listener) {
+        JsonObjectRequest jsonObjectRequest = mRequestFactory.produceJsonRequest(url, headParams, makeJsonListener(listener), makeErrorListener(listener));
         excuteRequest(jsonObjectRequest);
     }
+
     /**
      * a simple post json request
      */
-    public void excutePostJsonRequset(String url,Map<String,String> headParams,Map<String, String> postParams,INetClientJsonListener listener){
-        JsonObjectRequest jsonObjectRequest = mRequestFactory.producePostJsonRequest(url,headParams,postParams,makeJsonListener(listener),makeErrorListener(listener));
+    public void excutePostJsonRequset(String url, Map<String, String> headParams, Map<String, String> postParams, INetClientJsonListener listener) {
+        JsonObjectRequest jsonObjectRequest = mRequestFactory.producePostJsonRequest(url, headParams, postParams, makeJsonListener(listener), makeErrorListener(listener));
         excuteRequest(jsonObjectRequest);
     }
 
@@ -123,7 +127,7 @@ public class NetClient {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                strListener.onSuccess(response,null);
+                strListener.onSuccess(response, null);
                 strListener.onFinish();
             }
         };
@@ -134,7 +138,7 @@ public class NetClient {
         Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                jsonListener.onSuccess(jsonObject,null);
+                jsonListener.onSuccess(jsonObject, null);
                 jsonListener.onFinish();
             }
         };
@@ -175,26 +179,28 @@ public class NetClient {
     }
 
     //image
-    public static void loadImage(String url, ImageView imageView, int loadingResId, int errorResId) {
-        loadImage(url,imageView,loadingResId,errorResId,0,0);
+    public static ImageLoader.ImageContainer loadImage(String url, ImageView imageView, int loadingResId, int errorResId) {
+        return loadImage(url, imageView, loadingResId, errorResId, 0, 0);
     }
 
-    public static void loadImage(String url, ImageView imageView, int loadingResId, int errorResId,int maxWidth, int maxHeight) {
-        TNetworkApp.getInstance().getVolleyController().getImageLoader().get(url, ImageLoader.getImageListener(imageView, loadingResId, errorResId),maxWidth,maxHeight);
+    public static ImageLoader.ImageContainer loadImage(String url, ImageView imageView, int loadingResId, int errorResId, int maxWidth, int maxHeight) {
+        ImageLoader imageLoader = TNetworkApp.getInstance().getVolleyController().getImageLoader();
+        return imageLoader.get(url, ImageLoader.getImageListener(imageView, loadingResId, errorResId), maxWidth, maxHeight);
     }
 
     /**
      * if do not use xml anim , you should use{@link com.android.volley.toolbox.ImageLoader#get(String, com.android.volley.toolbox.ImageLoader.ImageListener)}
      * eg.
+     *
+     * @param loadingResId if loadingResId is 0 ,ImageView will not loading image
+     * @param animResId    anim in xml
      * @see {@link com.dpt.TNetwork.net.AbAnimImageListener}
-     * @param loadingResId if loadingResId is 0 ,imageview will not loading image
-     * @param animResId anim in xml
      */
-    public static void loadImageWithAnim(Context context,String url, ImageView imageView, int loadingResId, int errorResId, final int animResId){
-        TNetworkApp.getInstance().getVolleyController().getImageLoader().get(url,new AbAnimImageListener(context,imageView,errorResId,loadingResId) {
+    public static void loadImageWithAnim(Context context, String url, ImageView imageView, int loadingResId, int errorResId, final int animResId) {
+        TNetworkApp.getInstance().getVolleyController().getImageLoader().get(url, new AbAnimImageListener(context, imageView, errorResId, loadingResId) {
             @Override
             public int getAnimResId() {
-                if(animResId<1){
+                if (animResId < 1) {
                     return 0;
                 }
                 return animResId;
@@ -203,23 +209,33 @@ public class NetClient {
     }
 
     /**
-     *
      * @param isShouldCache if false will not in cache
      */
-    public static void loadImage(String url, final ImageView imageView, int loadingResId, final int errorResId,int maxWidth, int maxHeight,boolean isShouldCache,Bitmap.Config decodeConfig,String tag){
-        if(loadingResId>0){
+    public static ImageRequest loadImage(String url, final ImageView imageView, int loadingResId, final int errorResId, int maxWidth, int maxHeight, boolean isShouldCache, Bitmap.Config decodeConfig, String tag) {
+        ImageRequest imgRequest = getImageRequest(url, imageView, loadingResId, errorResId, maxWidth, maxHeight, isShouldCache, decodeConfig);
+        TNetworkApp.getInstance().getVolleyController().addToRequestQueue(imgRequest, tag);
+        return imgRequest;
+    }
+
+    private static ImageRequest getImageRequest(final String url, final ImageView imageView, int loadingResId, final int errorResId, int maxWidth, int maxHeight, final boolean isShouldCache, Bitmap.Config decodeConfig) {
+        if (loadingResId > 0) {
             imageView.setImageResource(loadingResId);
         }
-        if(maxWidth<1){
-            maxWidth=0;
+        if (maxWidth < 1) {
+            maxWidth = 0;
         }
-        if (maxHeight<1){
-            maxHeight=0;
+        if (maxHeight < 1) {
+            maxHeight = 0;
         }
+        final int finalMaxHeight = maxHeight;
+        final int finalMaxWidth = maxWidth;
         ImageRequest imgRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap response) {
                 imageView.setImageBitmap(response);
+                if (!isShouldCache) {
+                    TNetworkApp.getInstance().getVolleyController().getLruBitmapCache().putBitmap(getCacheKey(url, finalMaxWidth, finalMaxHeight), response);
+                }
             }
         }, maxWidth, maxHeight, decodeConfig, new Response.ErrorListener() {
             @Override
@@ -227,10 +243,14 @@ public class NetClient {
                 imageView.setImageResource(errorResId);
             }
         });
-        if(!isShouldCache){
+        if (!isShouldCache) {
             setNoCache(imgRequest);
         }
-        TNetworkApp.getInstance().getVolleyController().addToRequestQueue(imgRequest, tag);
+        return imgRequest;
+    }
+
+    public static ImageRequest loadImageByRequest(String url, ImageView imageView, boolean isShouldCache,int loadingResId, int errorResId) {
+        return loadImage(url, imageView, loadingResId, errorResId, 0, 0, isShouldCache, Bitmap.Config.RGB_565, null);
     }
 
     public static void cacheRemove(String url) {
@@ -260,6 +280,11 @@ public class NetClient {
     public static long getCacheSize(Context context) {
         File cacheDir = new File(context.getCacheDir(), "volley");
         return cacheDir.length();
+    }
+
+    private static String getCacheKey(String url, int maxWidth, int maxHeight) {
+        return new StringBuilder(url.length() + 12).append("#W").append(maxWidth)
+                .append("#H").append(maxHeight).append(url).toString();
     }
 
 }

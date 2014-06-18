@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import com.android.volley.toolbox.ImageLoader;
 import com.dpt.TNetwork.net.util.NetClient;
 
 /**
@@ -40,4 +43,46 @@ public class NetImageActivity extends Activity {
             "http://test.designer.c-launcher.com/resources/wallpaper/img/333/5397e5d50cf244d2003552cd/1402463701155/wallpaper_s.jpg",
             "http://test.designer.c-launcher.com/resources/wallpaper/img/246/5397d1310cf267d0f0d15dde/1402458417493/wallpaper_s.jpg"
     };
+
+    class DemoAdapter extends BaseAdapter{
+
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            ViewHolder holder;
+            if(view==null){
+                holder=new ViewHolder();
+                //some code
+                view.setTag(view);
+                holder.ivHolder=new ImageView(NetImageActivity.this);
+            }else{
+                holder= (ViewHolder) view.getTag();
+            }
+            if(holder.imageContainer!=null){
+                holder.imageContainer.cancelRequest();
+            }
+            holder.imageContainer=NetClient.loadImage(imageUrls[0],holder.ivHolder,R.drawable.loading,R.drawable.ic_launcher);
+
+            return view;
+        }
+    }
+
+    static class ViewHolder{
+        ImageLoader.ImageContainer imageContainer;
+        ImageView ivHolder;
+    }
 }

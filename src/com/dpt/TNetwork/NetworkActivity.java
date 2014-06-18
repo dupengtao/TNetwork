@@ -45,6 +45,7 @@ public class NetworkActivity extends Activity {
         loadJsonType();
     }
 
+
     private void loadJsonType() {
         engine.loadWalletHome(new INetClientJsonListener() {
             @Override

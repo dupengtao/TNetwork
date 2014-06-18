@@ -175,14 +175,13 @@ public class NetClient {
     }
 
     //image
-    public static void loadImage(String url, ImageView imageView, int loadingResId, int errorResId) {
-        loadImage(url,imageView,loadingResId,errorResId,0,0);
+    public static ImageLoader.ImageContainer loadImage(String url, ImageView imageView, int loadingResId, int errorResId) {
+        return loadImage(url,imageView,loadingResId,errorResId,0,0);
     }
 
-    public static void loadImage(String url, ImageView imageView, int loadingResId, int errorResId,int maxWidth, int maxHeight) {
+    public static ImageLoader.ImageContainer loadImage(String url, ImageView imageView, int loadingResId, int errorResId,int maxWidth, int maxHeight) {
         ImageLoader imageLoader = TNetworkApp.getInstance().getVolleyController().getImageLoader();
-        imageLoader.get(url, ImageLoader.getImageListener(imageView, loadingResId, errorResId), maxWidth, maxHeight);
-
+        return imageLoader.get(url, ImageLoader.getImageListener(imageView, loadingResId, errorResId), maxWidth, maxHeight);
     }
 
     /**
@@ -227,6 +226,7 @@ public class NetClient {
         ImageRequest imgRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap response) {
+                //TODO 这里面并没有放到lruCache中
                 imageView.setImageBitmap(response);
             }
         }, maxWidth, maxHeight, decodeConfig, new Response.ErrorListener() {

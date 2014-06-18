@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.ImageLoader;
 import com.dpt.TNetwork.net.util.NetClient;
 
 /**
@@ -72,19 +72,17 @@ public class NetImageActivity extends Activity {
             }else{
                 holder= (ViewHolder) view.getTag();
             }
-            if(holder.imageRequest==null){
-                holder.imageRequest=NetClient.loadImageByRequest(imageUrls[0],holder.ivHolder,R.drawable.loading,R.drawable.ic_launcher);
-            }else{
-                holder.imageRequest.cancel();
-                NetClient.loadImageByRequest(imageUrls[0],holder.ivHolder,R.drawable.loading,R.drawable.ic_launcher);
+            if(holder.imageContainer!=null){
+                holder.imageContainer.cancelRequest();
             }
+            holder.imageContainer=NetClient.loadImage(imageUrls[0],holder.ivHolder,R.drawable.loading,R.drawable.ic_launcher);
 
             return view;
         }
     }
 
     static class ViewHolder{
-        ImageRequest imageRequest;
+        ImageLoader.ImageContainer imageContainer;
         ImageView ivHolder;
     }
 }

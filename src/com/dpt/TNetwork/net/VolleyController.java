@@ -18,6 +18,7 @@ public class VolleyController {
     private final Context mContext;
     private ImageLoader mImageLoader;
     private RequestQueue mRequestQueue;
+    private LruBitmapCache mLruBitmapCache;
 
     private VolleyController(Context context) {
         mContext=context;
@@ -86,9 +87,13 @@ public class VolleyController {
     public ImageLoader getImageLoader() {
         getRequestQueue();
         if (mImageLoader == null) {
-            mImageLoader = new ImageLoader(this.mRequestQueue,
-                    new LruBitmapCache());
+            mLruBitmapCache = new LruBitmapCache();
+            mImageLoader = new ImageLoader(this.mRequestQueue,mLruBitmapCache);
         }
         return this.mImageLoader;
+    }
+
+    public LruBitmapCache getLruBitmapCache() {
+        return mLruBitmapCache;
     }
 }

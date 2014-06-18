@@ -180,7 +180,9 @@ public class NetClient {
     }
 
     public static void loadImage(String url, ImageView imageView, int loadingResId, int errorResId,int maxWidth, int maxHeight) {
-        TNetworkApp.getInstance().getVolleyController().getImageLoader().get(url, ImageLoader.getImageListener(imageView, loadingResId, errorResId),maxWidth,maxHeight);
+        ImageLoader imageLoader = TNetworkApp.getInstance().getVolleyController().getImageLoader();
+        imageLoader.get(url, ImageLoader.getImageListener(imageView, loadingResId, errorResId), maxWidth, maxHeight);
+
     }
 
     /**
@@ -206,7 +208,13 @@ public class NetClient {
      *
      * @param isShouldCache if false will not in cache
      */
-    public static void loadImage(String url, final ImageView imageView, int loadingResId, final int errorResId,int maxWidth, int maxHeight,boolean isShouldCache,Bitmap.Config decodeConfig,String tag){
+    public static ImageRequest loadImage(String url, final ImageView imageView, int loadingResId, final int errorResId,int maxWidth, int maxHeight,boolean isShouldCache,Bitmap.Config decodeConfig,String tag){
+        ImageRequest imgRequest = getImageRequest(url, imageView, loadingResId, errorResId, maxWidth, maxHeight, isShouldCache, decodeConfig);
+        TNetworkApp.getInstance().getVolleyController().addToRequestQueue(imgRequest, tag);
+        return imgRequest;
+    }
+
+    private static ImageRequest getImageRequest(String url, final ImageView imageView, int loadingResId, final int errorResId, int maxWidth, int maxHeight, boolean isShouldCache, Bitmap.Config decodeConfig) {
         if(loadingResId>0){
             imageView.setImageResource(loadingResId);
         }
@@ -230,7 +238,11 @@ public class NetClient {
         if(!isShouldCache){
             setNoCache(imgRequest);
         }
-        TNetworkApp.getInstance().getVolleyController().addToRequestQueue(imgRequest, tag);
+        return imgRequest;
+    }
+
+    public static ImageRequest loadImageByRequest(String url, ImageView imageView, int loadingResId, int errorResId) {
+        return loadImage(url,imageView,loadingResId,errorResId,0,0,true, Bitmap.Config.RGB_565,null);
     }
 
     public static void cacheRemove(String url) {

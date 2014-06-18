@@ -2,11 +2,9 @@ package com.dpt.TNetwork.net.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.ImageView;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -22,6 +20,7 @@ import com.dpt.TNetwork.util.LogHelper;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
@@ -249,8 +248,28 @@ public class NetClient {
         return imgRequest;
     }
 
-    public static ImageRequest loadImageByRequest(String url, ImageView imageView, boolean isShouldCache,int loadingResId, int errorResId) {
+    public static ImageRequest loadImageByRequest(String url, ImageView imageView, boolean isShouldCache, int loadingResId, int errorResId) {
         return loadImage(url, imageView, loadingResId, errorResId, 0, 0, isShouldCache, Bitmap.Config.RGB_565, null);
+    }
+
+    public static Bitmap loadImageInCache(String url, int maxWidth, int maxHeight) {
+        Cache.Entry entry = TNetworkApp.getInstance().getVolleyController().getRequestQueue().getCache().get(getCacheKey(url, maxHeight, maxWidth));
+        if (entry.data.length != 0) {
+            return BitmapFactory.decodeByteArray(entry.data, 0, entry.data.length);
+        } else {
+            return null;
+        }
+    }
+
+    public static String loadInCache(String url) {
+        Cache.Entry entry = TNetworkApp.getInstance().getVolleyController().getRequestQueue().getCache().get(url);
+        String data = null;
+        try {
+            data = new String(entry.data, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 
     public static void cacheRemove(String url) {

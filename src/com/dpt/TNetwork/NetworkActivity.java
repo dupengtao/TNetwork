@@ -50,6 +50,9 @@ public class NetworkActivity extends Activity {
         onlyLoadInCache();
     }
 
+    /**
+     * load in cache
+     */
     private void onlyLoadInCache() {
         String s = NetClient.loadInCache(UriHelper.getWalletHomeUri());
         if(TextUtils.isEmpty(s)){

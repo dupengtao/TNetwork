@@ -4,23 +4,28 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <Button
             android:text="load images"
             android:onClick="loadImages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-<ImageView
-        android:id="@+id/iv1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+
+    <ImageView
+            android:id="@+id/iv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     <ImageView
             android:id="@+id/iv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
     <ImageView
             android:id="@+id/iv3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
     <ImageView
             android:id="@+id/iv4"
             android:layout_width="wrap_content"

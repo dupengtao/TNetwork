@@ -264,6 +264,9 @@ public class NetClient {
     public static String loadInCache(String url) {
         Cache.Entry entry = TNetworkApp.getInstance().getVolleyController().getRequestQueue().getCache().get(url);
         String data = null;
+        if(entry==null){
+            return data;
+        }
         try {
             data = new String(entry.data, "UTF-8");
         } catch (UnsupportedEncodingException e) {

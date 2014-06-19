@@ -3,12 +3,15 @@ package com.dpt.TNetwork;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import com.dpt.TNetwork.engine.WalletEngine;
 import com.dpt.TNetwork.engine.domain.WalletAccountQuery;
 import com.dpt.TNetwork.net.listener.DefaultTOListener;
 import com.dpt.TNetwork.net.listener.INetClientJsonListener;
+import com.dpt.TNetwork.net.util.NetClient;
+import com.dpt.TNetwork.net.util.UriHelper;
 import org.json.JSONObject;
 
 public class NetworkActivity extends Activity {
@@ -40,9 +43,20 @@ public class NetworkActivity extends Activity {
 
     private void loadDate() {
 
-        // loadTOType();
+        //loadTOType();
 
-        loadJsonType();
+        //loadJsonType();
+
+        onlyLoadInCache();
+    }
+
+    private void onlyLoadInCache() {
+        String s = NetClient.loadInCache(UriHelper.getWalletHomeUri());
+        if(TextUtils.isEmpty(s)){
+            mTv.setText("nothing in cache");
+        }else {
+            mTv.setText(s);
+        }
     }
 
 

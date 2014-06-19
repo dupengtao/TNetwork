@@ -11,6 +11,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.dpt.TNetwork.net.util.NetClient;
 
 /**
+ * 
  * Created by dupengtao on 2014/6/17.
  */
 public class NetImageActivity extends Activity {
@@ -30,7 +31,7 @@ public class NetImageActivity extends Activity {
     public void loadImages(View v) {
         NetClient.loadImage(imageUrls[0],iv1,R.drawable.loading,R.drawable.ic_launcher);
         //set image size
-        NetClient.loadImage(imageUrls[1],iv2,R.drawable.loading,R.drawable.ic_launcher,100,100);
+        NetClient.loadImage(imageUrls[1],iv2,R.drawable.loading,R.drawable.ic_launcher);
         //add admin
         NetClient.loadImageWithAnim(this,imageUrls[2],iv3,R.drawable.loading,R.drawable.ic_launcher,R.anim.fade_in);
         //no cache

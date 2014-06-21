@@ -11,6 +11,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.dpt.TNetwork.application.TNetworkApp;
 import com.dpt.TNetwork.net.AbAnimImageListener;
+import com.dpt.TNetwork.net.CustomRequest;
 import com.dpt.TNetwork.net.DefaultRequestFactory;
 import com.dpt.TNetwork.net.VolleyErrorHelper;
 import com.dpt.TNetwork.net.listener.INetClientBaseListener;
@@ -112,8 +113,8 @@ public class NetClient {
      * a simple post json request
      */
     public void excutePostJsonRequset(String url, Map<String, String> headParams, Map<String, String> postParams, INetClientJsonListener listener) {
-        JsonObjectRequest jsonObjectRequest = mRequestFactory.producePostJsonRequest(url, headParams, postParams, makeJsonListener(listener), makeErrorListener(listener));
-        excuteRequest(jsonObjectRequest);
+        CustomRequest customRequest = mRequestFactory.producePostJsonRequest(url, headParams, postParams, makeJsonListener(listener), makeErrorListener(listener));
+        excuteRequest(customRequest);
     }
 
 

@@ -47,7 +47,13 @@ public class NetworkActivity extends Activity {
 
         //loadJsonType();
 
-        onlyLoadInCache();
+        //onlyLoadInCache();
+
+        loadPostJsonType();
+    }
+
+    private void loadPostJsonType() {
+
     }
 
     /**

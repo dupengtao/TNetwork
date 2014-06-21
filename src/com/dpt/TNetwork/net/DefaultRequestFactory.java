@@ -4,6 +4,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.dpt.TNetwork.util.LogHelper;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -75,7 +76,16 @@ public class DefaultRequestFactory {
     /**
      * easy to make a post JsonRequest
      */
-    public JsonObjectRequest producePostJsonRequest(String url, Map<String, String> headParams,Map<String, String> postParams, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener){
-        return produceJsonRequest(Method.POST,url,headParams,postParams,listener,errorListener);
+    public CustomRequest producePostJsonRequest(String url, final Map<String, String> headParams, Map<String, String> postParams, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        final CustomRequest jsObjRequest = new CustomRequest(Method.POST, url, postParams, listener, errorListener){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                if (headParams != null && !headParams.isEmpty()) {
+                    return headParams;
+                }
+                return super.getHeaders();
+            }
+        };
+        return jsObjRequest;
     }
 }
